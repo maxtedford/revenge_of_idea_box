@@ -10,8 +10,10 @@ class IdeasController < ApplicationController
     idea = Idea.new(idea_params)
     if idea.save
       flash[:notice] = "idea created!"
+      redirect_to root_path
     else
       flash[:error] = errors.full_messages.join(", ")
+      redirect_to root_path
     end
   end
   

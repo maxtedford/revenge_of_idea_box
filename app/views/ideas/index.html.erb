@@ -22,10 +22,10 @@
       <input type="text" class="form-control" id="search-field" placeholder="Find Idea">
     </div>
   </form>
-    <ul class="list-group">
-      <% @ideas.each do |idea| %>
-        <li class="list-group-item">Title: <%= idea.title %><br>Description: <%= idea.body %><br>Quality: <%= idea.quality %></li>
-      <% end %>
-    </ul>
+  <ul class="list-group">
+    <% @ideas.each do |idea| %>
+      <li class="list-group-item">Title: <%= idea.title %><br>Description: <%= idea.body %><br>Quality: <%= idea.quality %></li>
+    <% end %>
+  </ul>
 </div>
 </html>
