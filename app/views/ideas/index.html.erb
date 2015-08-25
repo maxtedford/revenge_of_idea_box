@@ -4,17 +4,28 @@
   <div class="jumbotron">
     <h1>IdeaBox 2.0</h1>
     <p>So many ideas!</p>
-    <form>
+    <%= form_for @idea, remote: true do |f| %>
       <div class="form-group">
-        <label>Title</label>
-        <input type="text" class="form-control" id="idea-title" placeholder="Title">
+        <%= f.label :title %>
+        <%= f.text_field :title, class: "form-control", id: "idea-title", placeholder: "Title" %>
       </div>
       <div class="form-group">
-        <label>Description</label>
-        <input type="text" class="form-control" id="idea-body" placeholder="Description">
+        <%= f.label "Description" %>
+        <%= f.text_area :body, class: "form-control", id: "idea-body", placeholder: "Description" %>
       </div>
-      <a class="btn btn-primary" href="" role="button">Save</a>
-    </form>
+      <%= f.submit "Save", class: "btn btn-default" %>
+    <% end %>
   </div>
+  <form class="form-inline">
+    <div class="form-group">
+      <label>Search:</label>
+      <input type="text" class="form-control" id="search-field" placeholder="Find Idea">
+    </div>
+  </form>
+    <ul class="list-group">
+      <% @ideas.each do |idea| %>
+        <li class="list-group-item">Title: <%= idea.title %><br>Description: <%= idea.body %><br>Quality: <%= idea.quality %></li>
+      <% end %>
+    </ul>
 </div>
 </html>
