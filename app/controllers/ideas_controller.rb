@@ -16,6 +16,18 @@ class IdeasController < ApplicationController
     respond_with "", status: 200
   end
   
+  def increasequal
+    @idea = Idea.find(params[:id])
+    @idea.update_attributes(quality: @idea.increase_quality)
+    respond_with @idea, status: 200
+  end
+  
+  def decreasequal
+    @idea = Idea.find(params[:id])
+    @idea.update_attributes(quality: @idea.decrease_quality)
+    respond_with @idea, status: 200
+  end
+  
   private
   
   def idea_params

@@ -41,12 +41,12 @@ function prependIdea(idea) {
 function deleteIdea() {
   $('#idea-delete').on('click', function() {
     var listItem = $(this).closest('.list-group-item');
-    var ideaID = ($(this).parent().data().id);
+    var ideaId = $(this).parent().data().id;
     
     $.ajax({
       method: "DELETE",
-      url: "/ideas/" + ideaID,
-      data: { id: ideaID }
+      url: "/ideas/" + ideaId,
+      data: { id: ideaId }
     }).done(function() {
       listItem.remove();
     }).fail(function() {
@@ -55,7 +55,50 @@ function deleteIdea() {
   })
 }
 
+function increaseQuality() {
+  $('#thumbs-up').on('click', function() {
+    var ideaId = $(this).parent().parent().data().id;
+    var ideaParameters = {
+      id: ideaId
+    };
+    var paragraph = $(this).parent();
+    
+    $.post('/increase', ideaParameters).then(function(idea) {
+      updatePage(idea, paragraph);
+    })
+  })
+}
+
+function decreaseQuality() {
+  $('#thumbs-down').on('click', function() {
+    var ideaId = $(this).parent().parent().data().id;
+    var ideaParameters = {
+      id: ideaId
+    };
+    var paragraph = $(this).parent();
+
+    $.post('/decrease', ideaParameters).then(function(idea) {
+      updatePage(idea, paragraph);
+    })
+  })
+}
+
+function updatePage(idea, paragraph) {
+  paragraph.html(
+    '<p class="idea-quality">Quality: ' + idea.quality
+    + '<button type="button" class="btn btn-default" id="thumbs-up" aria-label="Thumbs Up">'
+    + '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>'
+    + '</button>'
+    + '<button type="button" class="btn btn-default" id="thumbs-down" aria-label="Thumbs Down">'
+    + '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>'
+    + '</button>'
+    + '</p>'
+  )
+}
+
 $(document).ready(function() {
   createIdea();
   deleteIdea();
+  increaseQuality();
+  decreaseQuality();
 });
