@@ -11,7 +11,8 @@ var ideaList = {
 };
 
 function createIdea() {
-  $('#idea-save').on('click', function() {
+  $('#idea-save').on('click', function(event) {
+    event.preventDefault();
     var ideaParameters = {
       title: $('#idea-title').val(),
       body: $('#idea-body').val()
@@ -19,6 +20,10 @@ function createIdea() {
     
     $.post("/ideas", ideaParameters).then(function(idea) {
       prependIdea(idea);
+    }).then(function() {
+      deleteIdea();
+      increaseQuality();
+      decreaseQuality();
     });
 
     $('#idea-title').val("");
@@ -31,7 +36,11 @@ function prependIdea(idea) {
     '<li class="list-group-item" data-id=' + idea.id
     + '> <h3 class="idea-title">' + idea.title
     + '</h3><br><p class="idea-body">' + idea.body
-    + '</p><br><p class="idea-quality">Quality: ' + idea.quality
+    + '</p><button type="button" class="btn btn-default" id="thumbs-up" aria-label="Thumbs Up">'
+    + '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>'
+    + '<button type="button" class="btn btn-default" id="thumbs-down" aria-label="Thumbs Down">'
+    + '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>'
+    + '</button><br><p class="idea-quality">Quality: ' + idea.quality
     + '</p><br><button id="idea-edit" class="btn btn-default">Edit</button><br><button id="idea-delete" class="btn btn-default">Delete</button> </li>'
   );
   
@@ -39,7 +48,8 @@ function prependIdea(idea) {
 }
 
 function deleteIdea() {
-  $('#idea-delete').on('click', function() {
+  $('#idea-delete').on('click', function(event) {
+    event.preventDefault();
     var listItem = $(this).closest('.list-group-item');
     var ideaId = $(this).parent().data().id;
     
@@ -49,6 +59,7 @@ function deleteIdea() {
       data: { id: ideaId }
     }).done(function() {
       listItem.remove();
+      deleteIdea();
     }).fail(function() {
       alert("Request failed")
     })
@@ -56,12 +67,13 @@ function deleteIdea() {
 }
 
 function increaseQuality() {
-  $('#thumbs-up').on('click', function() {
+  $('#thumbs-up').on('click', function(event) {
+    event.preventDefault();
     var ideaId = $(this).parent().data().id;
     var ideaParameters = {
       id: ideaId
     };
-    var paragraph = $(this).next().next();
+    var paragraph = $(this).parent().find('.idea-quality');
     
     $.post('/increase', ideaParameters).then(function(idea) {
       updatePage(idea, paragraph);
@@ -70,12 +82,13 @@ function increaseQuality() {
 }
 
 function decreaseQuality() {
-  $('#thumbs-down').on('click', function() {
+  $('#thumbs-down').on('click', function(event) {
+    event.preventDefault();
     var ideaId = $(this).parent().data().id;
     var ideaParameters = {
       id: ideaId
     };
-    var paragraph = $(this).next();
+    var paragraph = $(this).parent().find('.idea-quality');
 
     $.post('/decrease', ideaParameters).then(function(idea) {
       updatePage(idea, paragraph);

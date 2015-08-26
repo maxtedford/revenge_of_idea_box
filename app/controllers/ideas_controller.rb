@@ -20,7 +20,7 @@ class IdeasController < ApplicationController
     @idea = Idea.find(params[:id])
     @idea.update_attributes(quality: @idea.increase_quality)
     respond_with @idea, status: 200
-  end
+  end\
   
   def decreasequal
     @idea = Idea.find(params[:id])
