@@ -4,17 +4,17 @@
   <div class="jumbotron">
     <h1>IdeaBox 2.0</h1>
     <p>So many ideas!</p>
-    <%= form_for @idea, remote: true do |f| %>
+    <form id="idea-form">
       <div class="form-group">
-        <%= f.label :title %>
-        <%= f.text_field :title, class: "form-control", id: "idea-title", placeholder: "Title" %>
+        <label>Title</label>
+        <input type="text" class="form-control" id="idea-title" placeholder="Enter Title">
       </div>
       <div class="form-group">
-        <%= f.label "Description" %>
-        <%= f.text_area :body, class: "form-control", id: "idea-body", placeholder: "Description" %>
+        <label>Description</label>
+        <input type="text" class="form-control" id="idea-body" placeholder="Enter Description">
       </div>
-      <%= f.submit "Save", class: "btn btn-default" %>
-    <% end %>
+      <button type="submit" id="idea-save" class="btn btn-default">Save</button>
+    </form>
   </div>
   <form class="form-inline">
     <div class="form-group">
@@ -22,9 +22,13 @@
       <input type="text" class="form-control" id="search-field" placeholder="Find Idea">
     </div>
   </form>
-  <ul class="list-group">
+  <ul class="list-group" id="idea-list">
     <% @ideas.each do |idea| %>
-      <li class="list-group-item">Title: <%= idea.title %><br>Description: <%= idea.body %><br>Quality: <%= idea.quality %></li>
+      <li class="list-group-item" data-id="<%= idea.id %>">
+        <h3 class="idea-title"><%= idea.title %></h3><br>
+        <p class="idea-body"><%= idea.body %></p><br>
+        <p class="idea-quality">Quality: <%= idea.quality %></p>
+      </li>
     <% end %>
   </ul>
 </div>

@@ -1,29 +1,18 @@
 class IdeasController < ApplicationController
-  before_action :all_ideas, only: [:index, :create]
-  respond_to :html, :js
+  respond_to :json
   
   def index
-    @idea = Idea.new
+    @ideas = Idea.all
   end
   
   def create
-    idea = Idea.new(idea_params)
-    if idea.save
-      flash[:notice] = "idea created!"
-      redirect_to root_path
-    else
-      flash[:error] = errors.full_messages.join(", ")
-      redirect_to root_path
-    end
+    @idea = Idea.create(title: params[:title], body: params[:body])
+    respond_with @idea, status: 201
   end
   
   private
   
   def idea_params
     params.require(:idea).permit(:title, :body, :quality)
-  end
-  
-  def all_ideas
-    @ideas = Idea.all
   end
 end
