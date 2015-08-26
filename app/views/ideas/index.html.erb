@@ -27,7 +27,9 @@
       <li class="list-group-item" data-id="<%= idea.id %>">
         <h3 class="idea-title"><%= idea.title %></h3><br>
         <p class="idea-body"><%= idea.body %></p><br>
-        <p class="idea-quality">Quality: <%= idea.quality %></p>
+        <p class="idea-quality">Quality: <%= idea.quality %></p><br>
+        <button id="idea-edit" class="btn btn-default">Edit</button><br>
+        <button id="idea-delete" class="btn btn-default">Delete</button>
       </li>
     <% end %>
   </ul>

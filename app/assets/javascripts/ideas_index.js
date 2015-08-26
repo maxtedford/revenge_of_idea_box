@@ -10,21 +10,52 @@ var ideaList = {
   }
 };
 
-$(document).ready(function() {
-  $('#idea-save').click(function(event) {
-    event.preventDefault();
-    console.log("fisst");
-    var title = document.getElementById('idea-title');
-    var body = document.getElementById('idea-body');
-    $.post("/ideas.json", {idea: {title: title, body: body}}).then(function(idea) {
-      $('#idea-list').prepend('<li class="list-group-item" id="' + idea.id + 
-      '"><h3 class="idea-title">' + 
-      title.value + '</h3><br><p class="idea-body">' + 
-      body.value + '</p><br><p class="idea-quality">Quality: ' + idea.quality + 
-      '</p></li>');
+function createIdea() {
+  $('#idea-save').on('click', function() {
+    var ideaParameters = {
+      title: $('#idea-title').val(),
+      body: $('#idea-body').val()
+    };
+    
+    $.post("/ideas", ideaParameters).then(function(idea) {
+      prependIdea(idea);
     });
+
     $('#idea-title').val("");
     $('#idea-body').val("");
-    ideaList.truncateBodies();
-  });
+  })
+}
+
+function prependIdea(idea) {
+  $('#idea-list').prepend(
+    '<li class="list-group-item" data-id=' + idea.id
+    + '> <h3 class="idea-title">' + idea.title
+    + '</h3><br><p class="idea-body">' + idea.body
+    + '</p><br><p class="idea-quality">Quality: ' + idea.quality
+    + '</p><br><button id="idea-edit" class="btn btn-default">Edit</button><br><button id="idea-delete" class="btn btn-default">Delete</button> </li>'
+  );
+  
+  ideaList.truncateBodies();
+}
+
+function deleteIdea() {
+  $('#idea-delete').on('click', function() {
+    var listItem = $(this).closest('.list-group-item');
+    var ideaID = ($(this).parent().data().id);
+    
+    $.ajax({
+      method: "DELETE",
+      url: "/ideas/" + ideaID,
+      data: { id: ideaID }
+    }).done(function() {
+      listItem.remove();
+    }).fail(function() {
+      alert("Request failed")
+    })
+  })
+}
+
+$(document).ready(function() {
+  createIdea();
+  deleteIdea();
 });

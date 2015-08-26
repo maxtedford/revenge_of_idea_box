@@ -10,6 +10,12 @@ class IdeasController < ApplicationController
     respond_with @idea, status: 201
   end
   
+  def destroy
+    @idea = Idea.find(params[:id])
+    @idea.destroy
+    respond_with "", status: 200
+  end
+  
   private
   
   def idea_params
