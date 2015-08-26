@@ -10,6 +10,16 @@ class IdeasController < ApplicationController
     respond_with @idea, status: 201
   end
   
+  def edit
+    @idea = Idea.find(params[:id])
+  end
+  
+  def update
+    idea = Idea.find(params[:id])
+    idea.update(idea_params)
+    redirect_to root_path
+  end
+  
   def destroy
     @idea = Idea.find(params[:id])
     @idea.destroy
@@ -20,7 +30,7 @@ class IdeasController < ApplicationController
     @idea = Idea.find(params[:id])
     @idea.update_attributes(quality: @idea.increase_quality)
     respond_with @idea, status: 200
-  end\
+  end
   
   def decreasequal
     @idea = Idea.find(params[:id])

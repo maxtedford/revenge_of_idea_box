@@ -1,7 +1,7 @@
 class Idea < ActiveRecord::Base
   enum quality: { swill: 0, plausible: 1, genius: 2 }
   
-  validates :title,   presence: true, uniqueness: true
+  validates :title,   presence: true
   validates :body,    presence: true
   validates :quality, presence: true
   

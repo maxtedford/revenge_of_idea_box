@@ -31,4 +31,38 @@ describe 'an idea' do
       expect(idea.quality).to eq("swill")
     end
   end
+  
+  context 'thumbs-up and thumbs-down' do
+    
+    let(:swill_params)  { { title: "idea title", body: "idea body" } }
+    let(:genius_params) { { title: "idea title", body: "idea body", quality: 2 } }
+    
+    it 'has its status increase by one increment' do
+      idea = Idea.create(swill_params)
+      idea.increase_quality
+      
+      expect(idea.quality).to eq("plausible")
+    end
+    
+    it 'wont increment any higher than genius' do
+      idea = Idea.create(genius_params)
+      idea.increase_quality
+      
+      expect(idea.quality).to eq("genius")
+    end
+    
+    it 'has its status decrease by one incremenet' do
+      idea = Idea.create(genius_params)
+      idea.decrease_quality
+      
+      expect(idea.quality).to eq("plausible")
+    end
+    
+    it 'wont increment any lower than swill' do
+      idea = Idea.create(swill_params)
+      idea.decrease_quality
+      
+      expect(idea.quality).to eq("swill")
+    end
+  end
 end

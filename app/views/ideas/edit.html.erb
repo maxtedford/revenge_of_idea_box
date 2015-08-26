@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<div class="container">
+  <div class="jumbotron">
+    <h1>IdeaBox 2.0</h1>
+    <p>So many ideas!</p>
+    <%= form_for @idea, id: "idea-form" do |f| %>
+      <%= f.label :title %>
+      <%= f.text_field :title, class: "form-control", id: "idea-title", placeholder: @idea.title %>
+      <br>
+      <%= f.label "Description" %>
+      <%= f.text_field :body, class: "form-control", id: "idea-body", placeholder: @idea.body %>
+      <br>
+      <%= f.submit "Save", class: "btn btn-default", id: "idea-update", method: :put %>
+    <% end %>
+  </div>
+</div>
+</html>

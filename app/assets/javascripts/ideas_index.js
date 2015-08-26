@@ -21,6 +21,7 @@ function createIdea() {
     $.post("/ideas", ideaParameters).then(function(idea) {
       prependIdea(idea);
     }).then(function() {
+      editIdea();
       deleteIdea();
       increaseQuality();
       decreaseQuality();
@@ -41,10 +42,18 @@ function prependIdea(idea) {
     + '<button type="button" class="btn btn-default" id="thumbs-down" aria-label="Thumbs Down">'
     + '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>'
     + '</button><br><p class="idea-quality">Quality: ' + idea.quality
-    + '</p><br><button id="idea-edit" class="btn btn-default">Edit</button><br><button id="idea-delete" class="btn btn-default">Delete</button> </li>'
+    + '</p><br><button id="idea-edit" class="btn btn-default">Edit</button><button id="idea-delete" class="btn btn-default">Delete</button> </li>'
   );
-  
   ideaList.truncateBodies();
+}
+
+function editIdea() {
+  $('#idea-edit').on('click', function() {
+    var ideaId = $(this).parent().data().id;
+    
+    $.get('/ideas/' + ideaId + '/edit', { id: ideaId });
+    window.location.href = '/ideas/' + ideaId + '/edit';
+  })
 }
 
 function deleteIdea() {
@@ -60,8 +69,6 @@ function deleteIdea() {
     }).done(function() {
       listItem.remove();
       deleteIdea();
-    }).fail(function() {
-      alert("Request failed")
     })
   })
 }
@@ -104,6 +111,7 @@ function updatePage(idea, paragraph) {
 
 $(document).ready(function() {
   createIdea();
+  editIdea();
   deleteIdea();
   increaseQuality();
   decreaseQuality();
