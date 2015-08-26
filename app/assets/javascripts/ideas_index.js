@@ -109,10 +109,24 @@ function updatePage(idea, paragraph) {
   )
 }
 
+function filter() {
+  $('#search-field').on('keyup', function() {
+    $('.list-group-item').each(function(index, element) {
+      var searchTerm = $('#search-field').val().toLowerCase();
+      if ($(element).text().toLowerCase().indexOf(searchTerm) !== -1 || searchTerm === "") {
+        $(element).show();
+      } else {
+        $(element).hide();
+      }
+    })
+  })
+}
+
 $(document).ready(function() {
   createIdea();
   editIdea();
   deleteIdea();
   increaseQuality();
   decreaseQuality();
+  filter();
 });
