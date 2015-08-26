@@ -57,11 +57,11 @@ function deleteIdea() {
 
 function increaseQuality() {
   $('#thumbs-up').on('click', function() {
-    var ideaId = $(this).parent().parent().data().id;
+    var ideaId = $(this).parent().data().id;
     var ideaParameters = {
       id: ideaId
     };
-    var paragraph = $(this).parent();
+    var paragraph = $(this).next().next();
     
     $.post('/increase', ideaParameters).then(function(idea) {
       updatePage(idea, paragraph);
@@ -71,11 +71,11 @@ function increaseQuality() {
 
 function decreaseQuality() {
   $('#thumbs-down').on('click', function() {
-    var ideaId = $(this).parent().parent().data().id;
+    var ideaId = $(this).parent().data().id;
     var ideaParameters = {
       id: ideaId
     };
-    var paragraph = $(this).parent();
+    var paragraph = $(this).next();
 
     $.post('/decrease', ideaParameters).then(function(idea) {
       updatePage(idea, paragraph);
@@ -85,14 +85,7 @@ function decreaseQuality() {
 
 function updatePage(idea, paragraph) {
   paragraph.html(
-    '<p class="idea-quality">Quality: ' + idea.quality
-    + '<button type="button" class="btn btn-default" id="thumbs-up" aria-label="Thumbs Up">'
-    + '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>'
-    + '</button>'
-    + '<button type="button" class="btn btn-default" id="thumbs-down" aria-label="Thumbs Down">'
-    + '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>'
-    + '</button>'
-    + '</p>'
+    '<p class="idea-quality">Quality: ' + idea.quality + '</p>'
   )
 }
 
