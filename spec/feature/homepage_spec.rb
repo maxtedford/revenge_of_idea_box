@@ -15,8 +15,8 @@ describe 'the user', type: :feature do
     end
     
     it 'displays the correct fields' do
-      expect(page).to have_field("Title")
-      expect(page).to have_field("Description")
+      expect(page).to have_field("Enter Title")
+      expect(page).to have_field("Enter Description")
       expect(page).to have_button("Save")
       expect(page).to have_field("Find Idea")
     end
@@ -26,11 +26,25 @@ describe 'the user', type: :feature do
     it 'when he/she clicks on save' do
       expect(Idea.all.count).to eq(0)
       
-      fill_in "Title", with: "idea title"
-      fill_in "Description", with: "idea description"
+      fill_in "Enter Title", with: "idea title"
+      fill_in "Enter Description", with: "idea description"
       click_on "Save"
       
-      expect(Idea.all.count).to eq(1)
+      expect(Idea.count).to eq(1)
+    end
+  end
+  
+  context 'deletes an idea' do
+    it 'when he/she clicks on delete' do
+      fill_in "Enter Title", with: "idea title"
+      fill_in "Enter Description", with: "idea description"
+      click_on "Save"
+      
+      expect(Idea.count).to eq(1)
+      
+      click_on "Delete"
+      
+      expect(Idea.count).to eq(0)
     end
   end
 end
