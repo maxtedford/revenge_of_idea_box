@@ -20,13 +20,12 @@ describe 'the user', type: :feature, js: true do
   
   context 'creates a new idea' do
     xit 'when he/she clicks on save' do
-      expect(Idea.all.count).to eq(0)
-      
+      idea_count = Idea.count
       fill_in "Enter Title", with: "idea title"
       fill_in "Enter Description", with: "idea description"
       click_on "Save"
       
-      expect(Idea.count).to eq(1)
+      expect(Idea.count).to eq(idea_count + 1)
     end
   end
   
@@ -35,12 +34,93 @@ describe 'the user', type: :feature, js: true do
       fill_in "Enter Title", with: "idea title"
       fill_in "Enter Description", with: "idea description"
       click_on "Save"
-      
-      expect(Idea.count).to eq(1)
+      idea_count = Idea.count
       
       click_on "Delete"
       
-      expect(Idea.count).to eq(0)
+      expect(Idea.count).to eq(idea_count - 1)
+    end
+  end
+  
+  context 'edits an idea' do
+    it 'when he/she clicks on edit' do
+      fill_in "Enter Title", with: "idea title"
+      fill_in "Enter Description", with: "idea description"
+      click_on "Save"
+
+      expect(page).to have_content("idea title")
+      
+      first("#idea-edit").click
+      fill_in "idea title", with: "idea title!"
+      click_on "Save"
+      
+      expect(page).to have_content("idea title!")
+    end
+  end
+  
+  context 'thumbs-ups an idea' do
+    it 'updates the quality accordingly' do
+      fill_in "Enter Title", with: "idea title"
+      fill_in "Enter Description", with: "idea description"
+      click_on "Save"
+
+      expect(page).to have_content("swill")
+      
+      first("#thumbs-up").click
+      
+      expect(page).to have_content("plausible")
+    end
+    
+    it 'wont increment higher than genius' do
+      fill_in "Enter Title", with: "idea title"
+      fill_in "Enter Description", with: "idea description"
+      click_on "Save"
+
+      expect(page).to have_content("swill")
+
+      first("#thumbs-up").click
+
+      expect(page).to have_content("plausible")
+
+      first("#thumbs-up").click
+      
+      expect(page).to have_content("genius")
+
+      first("#thumbs-up").click
+      
+      expect(page).to have_content("genius")
+    end
+  end
+  
+  context 'thumbs-down an idea' do
+    it 'updates the quality accordingly' do
+      fill_in "Enter Title", with: "idea title"
+      fill_in "Enter Description", with: "idea description"
+      click_on "Save"
+
+      expect(page).to have_content("swill")
+
+      2.times do
+        first("#thumbs-up").click
+      end
+      
+      expect(page).to have_content("genius")
+      
+      first("#thumbs-down").click
+      
+      expect(page).to have_content("plausible")
+    end
+    
+    it 'wont increment lower than swill' do
+      fill_in "Enter Title", with: "idea title"
+      fill_in "Enter Description", with: "idea description"
+      click_on "Save"
+
+      expect(page).to have_content("swill")
+      
+      first("#thumbs-down").click
+      
+      expect(page).to have_content("swill")
     end
   end
 end

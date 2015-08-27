@@ -1,14 +1,10 @@
-var ideaList = {
-  truncateBodies: function() {
-    $('.idea-body').each(function(index, idea) {
-      if ($(this).text().length > 100) {
-        return $(this).text().substr(0, 100);
-      } else {
-        return $(this).text()
-      }
-    });
-  }
-};
+function truncateBodies() {
+  $('.idea-body').each(function(index, idea) {
+    if ($(this).text().length > 100) {
+      return $(this).text().substr(0, 100) + '...';
+    }
+  });
+}
 
 function createIdea() {
   $('#idea-save').on('click', function(event) {
@@ -44,7 +40,7 @@ function prependIdea(idea) {
     + '</button><br><p class="idea-quality">Quality: ' + idea.quality
     + '</p><br><button id="idea-edit" class="btn btn-default">Edit</button><button id="idea-delete" class="btn btn-default">Delete</button> </li>'
   );
-  ideaList.truncateBodies();
+  truncateBodies();
 }
 
 function editIdea() {
@@ -123,6 +119,7 @@ function filter() {
 }
 
 $(document).ready(function() {
+  truncateBodies();
   createIdea();
   editIdea();
   deleteIdea();

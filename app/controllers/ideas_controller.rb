@@ -7,7 +7,7 @@ class IdeasController < ApplicationController
   
   def create
     @idea = Idea.create(title: params[:title], body: params[:body])
-    respond_with @idea, status: 201
+    respond_with @idea
   end
   
   def edit
@@ -23,19 +23,19 @@ class IdeasController < ApplicationController
   def destroy
     @idea = Idea.find(params[:id])
     @idea.destroy
-    respond_with "", status: 200
+    respond_with ""
   end
   
   def increasequal
     @idea = Idea.find(params[:id])
     @idea.update_attributes(quality: @idea.increase_quality)
-    respond_with @idea, status: 200
+    respond_with @idea
   end
   
   def decreasequal
     @idea = Idea.find(params[:id])
     @idea.update_attributes(quality: @idea.decrease_quality)
-    respond_with @idea, status: 200
+    respond_with @idea
   end
   
   private
